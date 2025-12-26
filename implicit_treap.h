@@ -4,13 +4,12 @@ Source: cp-algorithms, kactl, usaco.guide, cses
 Status: OK (https://cses.fi/problemset/task/2072)
 */
 
-// for printing
-#include <iostream>
+#include "template.h"
 
 constexpr int LIM=2e5+6;
 
 uint32_t rng() {
-    static uint32_t x=2463534242u;
+    static uint32_t x=2463534242U;
     x^=x<<13;
     x^=x>>17;
     x^=x<<5;
@@ -19,56 +18,57 @@ uint32_t rng() {
 
 // Implicit Treap
 struct ImpTreap {
-    using ptr=ImpTreap*;
-
-    int val; uint32_t pri; 
-    int cnt=1;
-    ptr l=nullptr; ptr r=nullptr;
-    ImpTreap() {}
-    ImpTreap(int v) : val(v), pri(rng()) {}
+    struct Node {
+        int val; uint32_t pri; 
+        int cnt=1; int l=0; int r=0;
+        Node(int v) : val(v), pri(rng()) {}
+    };
     
-    static inline int size(ptr t) { return ((t) ?t->cnt :0); }
-    static inline void upd_size(ptr t) {
-        if(!t) { return; }
-        t->cnt=1+size(t->l)+size(t->r);
+    vector<Node> t;
+    int root=0;
+    ImpTreap() {
+        t.reserve(LIM+1);
+        t.emplace_back(0);
+        t[0].cnt=0;
+        t[0].l=0; t[0].r=0;
     }
-    static void merge(ptr &t, ptr l, ptr r) {
-        if(!l || !r) {
-            t=((l) ?l :r);
-        } else if(l->pri > r->pri) {
-            merge(l->r, l->r, r);
-            t=l;
+
+    inline int size(int v) const { return t[v].cnt; }
+    inline void pull(int v) { t[v].cnt=1+size(t[v].l)+size(t[v].r); }
+    void merge(int &v, int l, int r) {
+        if(l==0 || r==0) {
+            v=((r==0) ?l :r);
+        } else if(t[l].pri > t[r].pri) {
+            merge(t[l].r, t[l].r, r);
+            v=l;
         } else {
-            merge(r->l, l, r->l);
-            t=r;
+            merge(t[r].l, l, t[r].l);
+            v=r;
         }
-        upd_size(t);
+        pull(v);
     }
-    static void split(ptr t, ptr &l, ptr &r, int k) {
-        if(!t) {
-            l=nullptr; r=nullptr;
+    void split(int v, int &l, int &r, int k) {
+        if(v==0) {
+            l=0; r=0;
             return;
         }
-        if(size(t->l) < k) {
-            split(t->r, t->r, r, k-size(t->l)-1); 
-            l=t;
+        if(size(t[v].l) < k) {
+            split(t[v].r, t[v].r, r, k-size(t[v].l)-1); 
+            l=v;
         } else {
-            split(t->l, l, t->l, k);
-            r=t;
+            split(t[v].l, l, t[v].l, k);
+            r=v;
         }
-        upd_size(t);
+        pull(v);
     }
-    static void print(ptr t, char endl='\n') {
-        if(t->l) { print(t->l, '\0'); }
-        std::cout<<(t->val);
-        if(t->r) { print(t->r, '\0'); } 
+    int new_node(char val) {
+        t.emplace_back(val);
+        return (int)t.size()-1;
+    }
+    void print(int v=0, char endl='\n') {
+        if(t[v].l!=0) { print(t[v].l, '\0'); }
+        if(v>0) { std::cout<<(t[v].val); }
+        if(t[v].r!=0) { print(t[v].r, '\0'); } 
         if(endl) { std::cout<<endl; }
     }
 };
-
-ImpTreap::ptr new_ImpTreap(int v) {
-    static ImpTreap pool[LIM];
-    static ImpTreap::ptr pool_ptr=pool;
-    *pool_ptr=ImpTreap(v);
-    return pool_ptr++;
-}
