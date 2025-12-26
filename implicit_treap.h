@@ -17,11 +17,12 @@ uint32_t rng() {
 }
 
 // Implicit Treap
+template <typename T>
 struct ImpTreap {
     struct Node {
-        int val; uint32_t pri; 
+        T val; uint32_t pri; 
         int cnt=1; int l=0; int r=0;
-        Node(int v) : val(v), pri(rng()) {}
+        Node(T v) : val(v), pri(rng()) {}
     };
     
     vector<Node> t;
@@ -61,13 +62,13 @@ struct ImpTreap {
         }
         pull(v);
     }
-    int new_node(char val) {
+    int new_node(T val) {
         t.emplace_back(val);
         return (int)t.size()-1;
     }
-    void print(int v=0, char endl='\n') {
+    void print(int v, char endl='\n') {
         if(t[v].l!=0) { print(t[v].l, '\0'); }
-        if(v>0) { std::cout<<(t[v].val); }
+        std::cout<<(t[v].val);
         if(t[v].r!=0) { print(t[v].r, '\0'); } 
         if(endl) { std::cout<<endl; }
     }

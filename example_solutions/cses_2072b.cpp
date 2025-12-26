@@ -45,7 +45,7 @@ struct ImpTreap {
     ImpTreap() {
         t.reserve(LIM+1);
         t.emplace_back(0);
-        t[0].val='\0'; t[0].cnt=0;
+        t[0].cnt=0;
         t[0].l=0; t[0].r=0;
     }
 
@@ -81,7 +81,7 @@ struct ImpTreap {
         t.emplace_back(val);
         return (int)t.size()-1;
     }
-    void print(int v=0, char endl='\n') {
+    void print(int v, char endl='\n') {
         if(t[v].l!=NIL) { print(t[v].l, '\0'); }
         std::cout<<(t[v].val);
         if(t[v].r!=NIL) { print(t[v].r, '\0'); } 
@@ -108,5 +108,5 @@ int32_t main() {
         t.merge(t.root, a, d);
         t.merge(t.root, t.root, c);
     }
-    t.print();
+    t.print(t.root);
 }
