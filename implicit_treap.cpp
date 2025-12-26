@@ -3,7 +3,7 @@
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
-    auto t=ImpTreap<char>();
+    ImpTreap<char> t;
     int n,q;
     cin>>n>>q;
     rep(_, n) {

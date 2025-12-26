@@ -91,7 +91,7 @@ struct ImpTreap {
 
 int32_t main() {
     cin.tie(0)->sync_with_stdio(0);
-    auto t=ImpTreap();
+    ImpTreap t;
     int n,q;
     cin>>n>>q;
     rep(_, n) {
