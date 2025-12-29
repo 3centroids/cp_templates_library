@@ -24,7 +24,6 @@ struct ImpTreap {
         int cnt=1; int l=0; int r=0;
         Node(T v) : val(v), pri(rng()) {}
     };
-    
     vector<Node> t;
     int root=0;
     ImpTreap() {
@@ -33,33 +32,18 @@ struct ImpTreap {
         t[0].cnt=0;
         t[0].l=0; t[0].r=0;
     }
-
     inline int size(int v) const { return t[v].cnt; }
     inline void pull(int v) { t[v].cnt=1+size(t[v].l)+size(t[v].r); }
     void merge(int &v, int l, int r) {
-        if(l==0 || r==0) {
-            v=((r==0) ?l :r);
-        } else if(t[l].pri > t[r].pri) {
-            merge(t[l].r, t[l].r, r);
-            v=l;
-        } else {
-            merge(t[r].l, l, t[r].l);
-            v=r;
-        }
+        if(l==0 || r==0) { v=((r==0) ?l :r); } 
+        else if(t[l].pri > t[r].pri) { merge(t[l].r, t[l].r, r); v=l; } 
+        else { merge(t[r].l, l, t[r].l); v=r; }
         pull(v);
     }
     void split(int v, int &l, int &r, int k) {
-        if(v==0) {
-            l=0; r=0;
-            return;
-        }
-        if(size(t[v].l) < k) {
-            split(t[v].r, t[v].r, r, k-size(t[v].l)-1); 
-            l=v;
-        } else {
-            split(t[v].l, l, t[v].l, k);
-            r=v;
-        }
+        if(v==0) { l=0; r=0; return; }
+        if(size(t[v].l) < k) { split(t[v].r, t[v].r, r, k-size(t[v].l)-1); l=v; } 
+        else { split(t[v].l, l, t[v].l, k); r=v; }
         pull(v);
     }
     int new_node(T val) {
@@ -68,8 +52,8 @@ struct ImpTreap {
     }
     void print(int v, char endl='\n') {
         if(t[v].l!=0) { print(t[v].l, '\0'); }
-        std::cout<<(t[v].val);
+        cout<<(t[v].val);
         if(t[v].r!=0) { print(t[v].r, '\0'); } 
-        if(endl) { std::cout<<endl; }
+        if(endl) { cout<<endl; }
     }
 };
