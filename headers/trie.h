@@ -6,6 +6,9 @@ Status: OK (https://atcoder.jp/contests/abc419/tasks/abc419_f)
 
 #include "template.h"
 
+///
+/// @brief Data structure which holds a Trie and suffix-links
+///
 struct AhoCorasick {
     static const int ALPHA=26;
     struct Node {

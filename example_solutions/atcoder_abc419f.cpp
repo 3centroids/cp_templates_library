@@ -1,3 +1,5 @@
+// adapted from trie.h
+
 #include <bits/stdc++.h>
 using namespace std;
 

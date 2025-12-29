@@ -1,5 +1,6 @@
 /*
 Date: 2025-12-29
+Source: folklore
 Status: not tested
 Notes:
 - query is r-inclusive
@@ -9,6 +10,11 @@ Notes:
 
 #include "template.h"
 
+///
+/// @brief Segment Tree (point set, range max)
+/// @param n Size of base array
+/// @note Queries are inclusive on both ends `[l, r]`
+///
 template <typename T>
 struct Tree {
     static constexpr T unit=numeric_limits<T>::min();
@@ -16,7 +22,7 @@ struct Tree {
     vector<T> t; int baza=1;
     Tree(int n) { 
         baza=1; 
-        while(baza < n) { baza*=2; } 
+        while(baza<n) { baza*=2; } 
         t.assign(2*baza, unit);
     }
     void upd(int pos, T val) {

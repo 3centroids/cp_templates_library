@@ -16,7 +16,10 @@ uint32_t rng() {
     return x;
 }
 
-// Implicit Treap
+///
+/// @brief Implicit Treap, can be considered an array with O(log2(n))
+/// insert() and delete()
+///
 template <typename T>
 struct ImpTreap {
     struct Node {
